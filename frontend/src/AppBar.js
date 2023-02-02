@@ -6,7 +6,7 @@ import Logo from './Logo';
 export default function DenseAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ background: '#02B17F' ,marginTop:-1, width:'120%',marginLeft:-1 }}>
+      <AppBar position="static" sx={{ background: '#02B17F' ,marginTop:-1, width:'101.3%',marginLeft:-1 }}>
         <Logo/>
         {/* <Toolbar variant="dense">
           <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>

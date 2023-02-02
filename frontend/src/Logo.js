@@ -19,10 +19,10 @@ const Logo = ({ onClick, variant }) => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   mr: 2,
-                  '& img': { width: '32px !important', height: 'auto' },
+                //   '& img': { width: '32px !important', height: 'auto' },
                 }}
               >
-                <Image src="/images/abstract.png" alt="Certificate icon" width={50} height={40} />
+                <Image src="/images/abstract.png" alt="Certificate icon" width={40} height={40} />
               </Box>
                
       <Typography
