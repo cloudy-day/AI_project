@@ -33,7 +33,7 @@ export const Footer = () => {
             </Grid>
           <Grid item xs={12}>
             <Typography color="black" variant="h5">
-              React Image Reconstruction Website
+              React Image Reconstruction and Captioning Website
             </Typography>
           </Grid>
           <Grid item xs={12}>

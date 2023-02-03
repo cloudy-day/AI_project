@@ -24,6 +24,7 @@ const CustomBox = styled('box')({
 export default function App(){
     const [image,setImage]=useState(null)
     const [img,setImg]=useState(null)
+    const [label,setLabel]=useState(null)
     const  handleSubmit=e=>{
         e.preventDefault()
 
@@ -31,9 +32,16 @@ export default function App(){
         .then(res=>res.json())
         .then(data=>{
             let bytestring = data.status
+            console.log(data.filename)
             let ima = bytestring.split('\'')[1]
             setImage(ima)
+
+            fetch(`api/labeling`,{method:'GET'})
+            .then(res=>res.json())
+            .then(data=>{console.log(data.status);setLabel(data.status[0])})
         })
+
+        
     }
 
     const handleChange=e=>{
@@ -46,7 +54,7 @@ export default function App(){
         .then(data=>alert(data.message))
     }
 
-    console.log( image)
+    // console.log( image)
     return(
         <div>
             <DenseAppBar/>
@@ -106,21 +114,70 @@ export default function App(){
           <Grid container spacing={20} marginTop={0.001} marginBottom={0.001}>
             <Grid>
            <Card >  
-           <Typography variant="h5" component="div">
+           <Box
+           display='flex'
+           justifyContent='center'
+           alignItems='center'
+           sx={{mx:'auto'}}
+           >
+           <Typography variant="h6" component="div" padding={1}>
          After
-        </Typography>   
+        </Typography>
+         </Box>   
           {image&&<img src={'data:image/jpeg;base64,'+image} />} 
           </Card>
           </Grid>
           <Grid>
           <Card >
-          <Typography variant="h5" component="div">
+          <Box
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          sx={{mx:'auto'}}
+          >
+          <Typography variant="h6" component="div" padding={1}>
          Before
         </Typography>  
+        </Box>
            {img && <img src={img}/>}
            </Card>
            </Grid>
           </Grid> 
+          </Box>
+          <Box
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          sx={{
+            //position: 'relative',
+            width: '90%',
+            minHeight:'3rem',
+            maxHeight: 'auto',
+            borderRadius: '20px',
+            marginTop:'35px',
+            mx:'auto'
+          }}>
+          <Typography variant='h5' component="div" color='black'>
+              Decription<br/>
+            </Typography>
+            </Box>
+          <Box
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          sx={{
+            //position: 'relative',
+            width: '90%',
+            minHeight:'5rem',
+            maxHeight: 'auto',
+            border: '2px dashed #f774af',
+            borderRadius: '20px',
+            marginTop:'2px',
+            mx:'auto'
+          }}>
+          <Typography variant="h5" component="div">
+          {label}
+         </Typography> 
           </Box>
          </CustomBox> 
         </div>
