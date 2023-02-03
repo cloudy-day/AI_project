@@ -24,6 +24,7 @@ const CustomBox = styled('box')({
 export default function App(){
     const [image,setImage]=useState(null)
     const [img,setImg]=useState(null)
+    const [label,setLabel]=useState(null)
     const  handleSubmit=e=>{
         e.preventDefault()
 
@@ -31,9 +32,16 @@ export default function App(){
         .then(res=>res.json())
         .then(data=>{
             let bytestring = data.status
+            console.log(data.filename)
             let ima = bytestring.split('\'')[1]
             setImage(ima)
+
+            fetch(`api/labeling`,{method:'GET'})
+            .then(res=>res.json())
+            .then(data=>{console.log(data.status)})
         })
+
+        
     }
 
     const handleChange=e=>{
@@ -46,7 +54,7 @@ export default function App(){
         .then(data=>alert(data.message))
     }
 
-    console.log( image)
+    // console.log( image)
     return(
         <div>
             <DenseAppBar/>
