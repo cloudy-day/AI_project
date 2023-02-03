@@ -54,6 +54,8 @@ export default function App(){
         .then(data=>alert(data.message))
     }
 
+    const refresh = () => window.location.reload(true)
+
     // console.log( image)
     return(
         <div>
@@ -95,7 +97,7 @@ export default function App(){
             </form>
             
             <Button variant='contained' fullwidth  sx={{ py: '0.8rem', my: 2,bgcolor: '#02B17F' ,marginLeft:'100px'  }}  onClick={handleSubmit}>Reconstruct</Button>
-           
+            <Button variant='contained' fullwidth  sx={{ py: '0.8rem', my: 2,bgcolor: '#02B17F' ,marginLeft:'100px'  }}  onClick={refresh}>Refresh</Button>
             {/* {image&&<img src={'data:image/jpeg;base64,'+image} />} */}
          </Box>
          <Box
@@ -124,7 +126,7 @@ export default function App(){
          After
         </Typography>
          </Box>   
-          {image&&<img src={'data:image/jpeg;base64,'+image} />} 
+          {image&&<img src={'data:image/jpeg;base64,'+image}  />} 
           </Card>
           </Grid>
           <Grid>
@@ -139,7 +141,7 @@ export default function App(){
          Before
         </Typography>  
         </Box>
-           {img && <img src={img}/>}
+           {img && <img src={img} width={250} height={200}/>}
            </Card>
            </Grid>
           </Grid> 
