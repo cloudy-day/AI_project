@@ -1,29 +1,43 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart' as syspaths;
-import 'package:http/http.dart' as http;
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  MaterialColor mycolor = MaterialColor(
+      const Color.fromRGBO(2, 177, 127, 1).value, const <int, Color>{
+    50: Color.fromRGBO(2, 177, 127, 0.1),
+    100: Color.fromRGBO(2, 177, 127, 0.2),
+    200: Color.fromRGBO(2, 177, 127, 0.3),
+    300: Color.fromRGBO(2, 177, 127, 0.4),
+    400: Color.fromRGBO(2, 177, 127, 0.5),
+    500: Color.fromRGBO(2, 177, 127, 0.6),
+    600: Color.fromRGBO(2, 177, 127, 0.7),
+    700: Color.fromRGBO(2, 177, 127, 0.8),
+    800: Color.fromRGBO(2, 177, 127, 0.9),
+    900: Color.fromRGBO(2, 177, 127, 1),
+  });
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Unblurition',
+      title: 'ReconLab',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: mycolor,
       ),
       home: const HomePage(),
     );
@@ -40,6 +54,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   File? _storedImage;
   Uint8List? _base64;
+  String? _label;
+  bool _isProcessing = false;
+  Future? _processed, _captioned;
 
   Future<void> _takePicture() async {
     final takenImage = await ImagePicker().pickImage(
@@ -53,31 +70,23 @@ class _HomePageState extends State<HomePage> {
       final savedImage = await imageFile.copy('${appDir.path}/$filename');
       setState(() {
         _storedImage = savedImage;
+        _isProcessing = false;
+        _label = null;
       });
 
-      var stream = http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
-      // get file length
-      var length = await imageFile.length(); //imageFile is your image file
+      var stream = http.ByteStream(imageFile.openRead())..cast();
+      var length = await imageFile.length();
       Map<String, String> headers = {
         "Content-type": "multipart/form-data",
-      }; // ignore this headers if there is no authentication
+      };
 
-      // string to uri
       var uri = Uri.parse("http://10.0.2.2:5000/api/upload/multiple");
-
-      // create multipart request
       var request = http.MultipartRequest("POST", uri);
+      var multipartFileSign = http.MultipartFile('file', stream, length,
+          filename: basename(imageFile.path));
 
-      // multipart that takes file
-      var multipartFileSign = http.MultipartFile('file', stream, length, filename: basename(imageFile.path));
-
-      // add file to multipart
       request.files.add(multipartFileSign);
-
-      //add headers
       request.headers.addAll(headers);
-
-      // send
       var response = await request.send();
 
       print(response.statusCode);
@@ -93,9 +102,22 @@ class _HomePageState extends State<HomePage> {
     final response = await http.get(uri);
     final Map<String, dynamic>? data = json.decode(response.body);
     if (data == null) return;
+    _captioned = _imageLabeling();
     print(data['status']);
     setState(() {
-      _base64 = const Base64Decoder().convert((data['status'] as String).split('\'')[1]);
+      _base64 = const Base64Decoder()
+          .convert((data['status'] as String).split('\'')[1]);
+    });
+  }
+
+  Future<void> _imageLabeling() async {
+    final uri = Uri.parse("http://10.0.2.2:5000/api/labeling");
+    final response = await http.get(uri);
+    final Map<String, dynamic>? data = json.decode(response.body);
+    if (data == null) return;
+    print(data['status']);
+    setState(() {
+      _label = data['status'][0];
     });
   }
 
@@ -103,12 +125,35 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Unblurition'),
+        title: const Text('ReconLab'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            FutureBuilder(
+              future: _captioned,
+              builder: (context, snapshot) {
+                return _label != null
+                    ? Container(
+                        width: double.infinity,
+                        height: 100,
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: const Color.fromRGBO(2, 177, 127, 1),
+                          ),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(_label!),
+                      )
+                    : const SizedBox();
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
             Container(
               width: double.infinity,
               height: 300,
@@ -120,15 +165,38 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               alignment: Alignment.center,
-              child: _base64 != null
-                  ? Image.memory(
-                      _base64!,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                    )
-                  : const Text(
-                      'No image Taken',
-                      textAlign: TextAlign.center,
+              child: _isProcessing == false
+                  ? _storedImage != null
+                      ? Image.file(
+                          _storedImage!,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                        )
+                      : const Text(
+                          'No image Taken',
+                          textAlign: TextAlign.center,
+                        )
+                  : FutureBuilder(
+                      future: _processed,
+                      builder: (context, snapshot) =>
+                          snapshot.connectionState == ConnectionState.waiting
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : snapshot.error != null
+                                  ? const Center(
+                                      child: Icon(Icons.error),
+                                    )
+                                  : _base64 != null
+                                      ? Image.memory(
+                                          _base64!,
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                        )
+                                      : const Text(
+                                          'No image Taken',
+                                          textAlign: TextAlign.center,
+                                        ),
                     ),
             ),
             const SizedBox(
@@ -154,7 +222,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: _imageReconstruct,
+                  onPressed: () {
+                    _processed = _imageReconstruct();
+                    setState(() {
+                      _isProcessing = true;
+                    });
+                  },
                   child: Container(
                     margin: const EdgeInsets.symmetric(
                       vertical: 5,
