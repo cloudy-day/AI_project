@@ -52,9 +52,7 @@
 
 - Now open the project in visual studio code or android studio as you prefer. Install flutter and dart plugin from market place.
 
-- Install following project dependencies.
-
-$ utter pub add flutter_native_splash http image_picker path path_provider
+- Install following project dependencies ``$ utter pub add flutter_native_splash http image_picker path path_provider``
 
 - Run the project in the android virtual device or your preferred virtual device, and you are ready to go.
 
