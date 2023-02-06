@@ -32,21 +32,31 @@
 ## #Installation Guide
 
 ## Web App
--Clone the repo
+- clone the repository
 
--Open the project in any code editor you like. But it would be best if you used Visual Studio Code.
+- open the project in any code editor you like. But it would be best if you used Visual Studio Code
 
--then open two terminals one for frontend and one for backend.
+- then open two terminals one for frontend and one for backend
 
--in one of the terminals type ``cd frontend`` and type ``cd backend`` on the other. 
+- in one of the terminals type ``cd frontend`` and type ``cd backend`` on the other
 
--for the terminal in which you are in 'frontend' directory type ``npm install`` to install all the dependecies from the package.json you need. But some imports can still be marked as red after that showing that it doesn't exist. If you face such problem, you have to import them manually. When everything is set type ``npm start`` on the terminal to start the project on localhost.
+- for the terminal in which you are in 'frontend' directory type ``npm install`` to install all the dependecies from the package.json you need. But some imports can still be marked as red after that showing that it doesn't exist. If you face such problem, you have to import them manually. When everything is set type ``npm start`` on the terminal to start the project on localhost
 
--for the other terminal in which you are in 'backend' directory type ``pip install flask-cors flask torch python-opencv pillow transformers`` to install all the python packages needed for this project or manually install only those python packages that you don't have. Then type ``python main.py`` to start the backend server. 
+- for the other terminal in which you are in 'backend' directory type ``pip install flask-cors flask torch python-opencv pillow transformers`` to install all the python packages needed for this project or manually install only those python packages that you don't have. Then type ``python main.py`` to start the backend server 
 
--Then you are all set to use our app.  
+- Then you are all set to use our app
 
 ## Mobile App
+
+- First download and install flutter from official flutter page https://docs.flutter.dev/get-started/install 
+
+- Now open the project in visual studio code or android studio as you prefer. Install flutter and dart plugin from market place.
+
+- Install following project dependencies.
+
+$ utter pub add flutter_native_splash http image_picker path path_provider
+
+- Run the project in the android virtual device or your preferred virtual device, and you are ready to go.
 
 
 ## #Developers
