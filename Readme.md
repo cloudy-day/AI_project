@@ -38,11 +38,11 @@
 
 -then open two terminals one for frontend and one for backend.
 
--in one of the terminals type ``cd frontend`` (without quotes) and type ``cd backend`` (without quotes) on the other. 
+-in one of the terminals type ``cd frontend`` and type ``cd backend`` on the other. 
 
--for the terminal in which you are in 'frontend' directory type ``npm install`` (without quotes) to install all the dependecies from the package.json you need. But some imports can still be marked as red after that showing that it doesn't exist. If you face such problem, you have to import them manually. When everything is set type ``npm start`` (without quotes) on the terminal to start the project on localhost.
+-for the terminal in which you are in 'frontend' directory type ``npm install`` to install all the dependecies from the package.json you need. But some imports can still be marked as red after that showing that it doesn't exist. If you face such problem, you have to import them manually. When everything is set type ``npm start`` on the terminal to start the project on localhost.
 
--for the other terminal in which you are in 'backend' directory type ``pip install flask-cors flask torch python-opencv pillow transformers`` (without quotes) to install all the python packages needed for this project or manually install only those python packages that you don't have. Then type ``python main.py`` (without quotes) to start the backend server. 
+-for the other terminal in which you are in 'backend' directory type ``pip install flask-cors flask torch python-opencv pillow transformers`` to install all the python packages needed for this project or manually install only those python packages that you don't have. Then type ``python main.py`` to start the backend server. 
 
 -Then you are all set to use our app.  
 
