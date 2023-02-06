@@ -69,10 +69,6 @@
 | :-: | :-----------------: | :----------- | :------------- | :----------------------- |
 |  1  | Tahsina Bintay Azam | 2018331072   | +8801741969665 | tahsina.sheeva@gmail.com |
 |  2  |  Nurun Islam Niloy  | 2018331070   | +8801567934602 |  ibn20172016@gmail.com   |
-|  3  |  Abdul Wadud Shakib | 2018331120   | +8801721140302 | abdul20@student.sust.edu |
+|  3  |  Abdul Wadud Shakib | 2018331120   | +8801721140302 |   wadud6065@gmail.com    |
 |  4  |  S. M. Al - Hasib   | 2018331094   | +8801571342894 |   alhasibsm@gmail.com    |
 |  5  | Dewan Mahinur Alam  | 2018331054   | +8801771113915 | mahinuralam1108@gmail.com|
-
-<p align="center">
-<small>&copy; 2023 - Dept. of CSE, SUST, BD</small>
-</p>
