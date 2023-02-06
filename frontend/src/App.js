@@ -160,7 +160,7 @@ export default function App(){
             mx:'auto'
           }}>
           <Typography variant='h5' component="div" color='black'>
-              Decription<br/>
+              Description<br/>
             </Typography>
             </Box>
           <Box
